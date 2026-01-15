@@ -22,13 +22,13 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: false
-          tags: ${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.actor }}/learnx:latest
 
       - name: Slim Image
         uses: kitabisa/docker-slim-action@v1
         with:
-          target: ${{ github.repository }}:latest
-          tag: "slim"
+          target: ghcr.io/${{ github.actor }}/learnx:latest
+          tag: ghcr.io/${{ github.actor }}/learnx:slim
 
       - name: Push to Registry
-        run: docker image push "${{ github.repository }}" --all-tags
+        run: docker image push "ghcr.io/${{ github.actor }}/learnx" --all-tags

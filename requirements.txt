@@ -1,6 +1,0 @@
-PyYAML
-Jinja2
-cmarkgfm
-python-frontmatter
-Pygments
-Babel

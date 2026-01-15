@@ -28,7 +28,7 @@ jobs:
         uses: kitabisa/docker-slim-action@v1
         with:
           target: ghcr.io/${{ github.actor }}/learnx:latest
-          tag: ghcr.io/${{ github.actor }}/learnx:slim
+          tag: slim
 
       - name: Push to Registry
-        run: docker image push "ghcr.io/${{ github.actor }}/learnx" --all-tags
+        run: docker push "ghcr.io/${{ github.actor }}/learnx" --all-tags

@@ -26,6 +26,8 @@ jobs:
 
       - name: Slim Image
         uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_INCLUDE_PATH: /usr/share/nginx/html
         with:
           target: ghcr.io/${{ github.actor }}/learnx:latest
           tag: slim

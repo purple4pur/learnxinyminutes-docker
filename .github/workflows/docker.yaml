@@ -27,9 +27,10 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: false
-          tags: |
-            ghcr.io/${{ github.actor }}/learnx:latest
-            ghcr.io/${{ github.actor }}/learnx:${{ steps.date.outputs.date_tag }}
+          tags: ghcr.io/${{ github.actor }}/learnx:latest
+
+      - name: Tag Image with date
+        run: docker tag ghcr.io/${{ github.actor }}/learnx:latest ghcr.io/${{ github.actor }}/learnx:${{ steps.date.outputs.date_tag }}
 
       - name: Slim Image
         uses: kitabisa/docker-slim-action@v1
@@ -37,9 +38,15 @@ jobs:
           DSLIM_INCLUDE_PATH: /usr/share/nginx/html
         with:
           target: ghcr.io/${{ github.actor }}/learnx:latest
-          tag: |
-            slim
-            ${{ steps.date.outputs.date_tag }}-slim
+          tag: slim
+
+      - name: Slim Image (date tag)
+        uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_INCLUDE_PATH: /usr/share/nginx/html
+        with:
+          target: ghcr.io/${{ github.actor }}/learnx:latest
+          tag: ${{ steps.date.outputs.date_tag }}-slim
 
       - name: Push to Registry
         run: docker push "ghcr.io/${{ github.actor }}/learnx" --all-tags

@@ -7,10 +7,15 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    outputs:
+      date_tag: ${{ steps.date.outputs.date_tag }}
 
     steps:
+      - name: Generate date tag
+        id: date
+        run: echo "date_tag=$(date +%Y%m%d)" >> $GITHUB_OUTPUT
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -22,7 +27,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: false
-          tags: ghcr.io/${{ github.actor }}/learnx:latest
+          tags: |
+            ghcr.io/${{ github.actor }}/learnx:latest
+            ghcr.io/${{ github.actor }}/learnx:${{ steps.date.outputs.date_tag }}
 
       - name: Slim Image
         uses: kitabisa/docker-slim-action@v1
@@ -30,7 +37,9 @@ jobs:
           DSLIM_INCLUDE_PATH: /usr/share/nginx/html
         with:
           target: ghcr.io/${{ github.actor }}/learnx:latest
-          tag: slim
+          tag: |
+            slim
+            ${{ steps.date.outputs.date_tag }}-slim
 
       - name: Push to Registry
         run: docker push "ghcr.io/${{ github.actor }}/learnx" --all-tags
